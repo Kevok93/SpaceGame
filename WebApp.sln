@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "WebApp_slib", "WebApp_slib\WebApp_slib.shproj", "{63A72B5B-4341-488A-B277-336CE011736D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp_NativeLib", "WebApp_NativeLib\WebApp_NativeLib.csproj", "{6E386D18-1AEC-4941-9EDA-521F1C6EFA06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp_NativeTests", "WebApp_NativeTests\WebApp_NativeTests.csproj", "{B83CDAEC-AD17-4B43-8E00-6EF5849D73B8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6E386D18-1AEC-4941-9EDA-521F1C6EFA06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E386D18-1AEC-4941-9EDA-521F1C6EFA06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E386D18-1AEC-4941-9EDA-521F1C6EFA06}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6E386D18-1AEC-4941-9EDA-521F1C6EFA06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E386D18-1AEC-4941-9EDA-521F1C6EFA06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E386D18-1AEC-4941-9EDA-521F1C6EFA06}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B83CDAEC-AD17-4B43-8E00-6EF5849D73B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B83CDAEC-AD17-4B43-8E00-6EF5849D73B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B83CDAEC-AD17-4B43-8E00-6EF5849D73B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B83CDAEC-AD17-4B43-8E00-6EF5849D73B8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
