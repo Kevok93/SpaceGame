@@ -4,11 +4,11 @@ using WebApp_slib.StaticTypes;
 
 namespace WebApp_slib.InstanceTypes {
 public class ResourceStockpile {
-    public GameResource type { get; }
+    public GameResourceType type { get; }
     public int value { get; set; }
 
     public ResourceStockpile(
-        GameResource type,
+        GameResourceType type,
         int          value = 0
     ) {
         this.type = type;
