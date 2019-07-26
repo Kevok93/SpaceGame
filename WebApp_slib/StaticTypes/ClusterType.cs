@@ -17,7 +17,7 @@ namespace WebApp_slib.StaticTypes {
             string          name,
             string          description,
             YieldModifier   yieldModifier
-        ) : base(id) {
+        ) : base(id, ElementType.ClusterType) {
             this.icon          = icon;
             this.name          = name;
             this.description   = description;

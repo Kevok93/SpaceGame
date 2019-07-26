@@ -3,12 +3,55 @@ using System.Diagnostics.Contracts;
 using Newtonsoft.Json.Linq;
 
 namespace WebApp_slib.StaticTypes {
+
     
-    public class DeserializedElement{
+    
+    public abstract class DeserializedElement : 
+        IEquatable<DeserializedElement>,
+        IComparable<DeserializedElement> 
+    {
+        
+        protected enum ElementType {
+            GameResource, 
+            PlanetType,
+            ClusterType,
+            AbstractImage
+        }
+        
+        //Type used to separate ids from each other
+        //Not to be used as type-safety
+        protected readonly ElementType type;
         public readonly ElementId id;
 
-        protected DeserializedElement(int       id) { this.id = id; }
-        protected DeserializedElement(ElementId id) { this.id = id; }
+
+        protected DeserializedElement(
+            ElementId id,
+            ElementType type    
+        ) {
+            this.id = id;
+            this.type = type;
+        }
+
+        public override bool Equals(object obj) {
+            switch (obj) {
+                case null: default: return false;
+                case DeserializedElement e: return this.Equals(e);
+            }
+        }
+
+        public override int GetHashCode() =>
+            this.type.GetHashCode() &
+            this.id.GetHashCode();
+
+        public bool Equals(DeserializedElement other) =>
+            other      != null      &&
+            other.type == this.type &&
+            other.id   == this.id;
+
+        public int CompareTo(DeserializedElement other) =>
+            other != null
+                ? this.id.CompareTo(other.id)
+                : 1;
     }
     
     public struct ElementId : 
@@ -65,5 +108,6 @@ namespace WebApp_slib.StaticTypes {
         
         public override int GetHashCode() => Value.GetHashCode();
     }
+    
     
 }

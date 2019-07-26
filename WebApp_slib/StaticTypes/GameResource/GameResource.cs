@@ -19,7 +19,7 @@ public class GameResourceType :
         string name,
         string description,
         string units
-    ) : base(id) {
+    ) : base(id, ElementType.GameResource) {
         this.name        = name        ?? throw new ArgumentNullException(nameof(       name));
         this.description = description ?? throw new ArgumentNullException(nameof(      units));
         this.units       = units       ?? throw new ArgumentNullException(nameof(description));

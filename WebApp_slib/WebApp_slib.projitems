@@ -12,13 +12,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)InstanceTypes\PlanetarySystem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InstanceTypes\ResourceStockpile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LinkTest.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)StaticTypes\AbstractResource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StaticTypes\ClientResource\AbstractResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StaticTypes\ClusterType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StaticTypes\DeserializedElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StaticTypes\GameResource\GameResource.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StaticTypes\GameResource\ResourceYield.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StaticTypes\GameResource\SingularYield.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StaticTypes\PlanetType.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Util\Lock.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\MutExExecutor.cs" />
   </ItemGroup>
 </Project>

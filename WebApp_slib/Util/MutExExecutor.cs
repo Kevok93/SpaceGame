@@ -2,8 +2,8 @@ using System;
 
 namespace WebApp_slib.Util {
 
-    public class Lock {
-        private object _lock = new Lock();
+    public class MutExExecutor {
+        private object _lock = new object();
         
         public TR doLocked<TR>(Func<TR> action) {
             lock (_lock) return action.Invoke();

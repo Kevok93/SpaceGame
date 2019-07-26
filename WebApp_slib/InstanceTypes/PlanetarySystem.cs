@@ -19,7 +19,7 @@ namespace WebApp_slib.InstanceTypes {
         public uint  freePlanetCount { get; private set; }
         public uint totalPlanetCount { get; private set; }
 
-        private readonly Lock _lock = new Lock();
+        private readonly MutExExecutor _lock = new MutExExecutor();
 
         public SystemCluster(
             [NotNull] ClusterType clusterType, 
