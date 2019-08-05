@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Linq;
 using JetBrains.Annotations;
@@ -48,12 +49,7 @@ namespace WebApp_slib.StaticTypes {
             /**/ int                   mult
         ) {
             if (src == null) throw new ArgumentNullException(paramName: nameof(src));
-            lock (src.Keys) {
-                var containedTypes = src.Keys.ToArray();
-                foreach (var resourceType in containedTypes) {
-                    src[resourceType] *= mult;
-                }
-            }
+            src.ToList().ForEach(kvp => src[kvp.Key] *= mult);
             return src;
         }
         [Pure] public static FinishedResourceYield scalePure (

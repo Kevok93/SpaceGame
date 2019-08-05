@@ -27,6 +27,6 @@ namespace WebApp_slib.StaticTypes {
             this.yieldModifier = yieldModifier;
         }
         
-        public static readonly YieldModifier NOOP_MODIFIER = baseYield => baseYield;
+        public static readonly YieldModifier NOOP_MODIFIER = baseYield => baseYield.cloneLocked();
     }
 }
