@@ -86,10 +86,11 @@ namespace WebApp_slib.InstanceTypes {
             return 0;
         }
 
-        public  ResourceYield  getYield() => _lock.doLocked(_getYield);
-        private ResourceYield _getYield() {
-            ResourceYield yield = ResourceYield.NOTHING;
-            foreach (PlanetType type in planetCount.Keys) yield += type.getYield(planetCount[type]);
+        public  FinishedResourceYield getYield() => _lock.doLocked(_getYield);
+        private FinishedResourceYield _getYield() {
+            FinishedResourceYield yield = new ResourceYield();
+            foreach (PlanetType type in planetCount.Keys) 
+                yield.combinePure(type.getYield(planetCount[type]));
             return yield;
         }
 

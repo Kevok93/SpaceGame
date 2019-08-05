@@ -4,7 +4,7 @@ using WebApp_slib.StaticTypes;
 using static WebApp_slib.StaticTypes.PlanetType;
 
 namespace WebApp_NativeTests.StaticTypes { 
-[TestFixture(TestName = "Game Resource Tests", TestOf = typeof(PlanetType))]
+[TestFixture(TestName = "Abstract Planet Type", TestOf = typeof(PlanetType))]
 public class PlanetTypeTest {
 	public static PlanetType getTestPlanetType(
 		ElementId?      id    = null,
@@ -39,7 +39,7 @@ public class PlanetTypeTest {
 				value: 500
 			);
 		var fullYield =
-			GameResourceYieldTest.GetTestGameResourceYield(yieldResource);
+			GameResourceYieldTest.GetTestFinishedGameResourceYield(yieldResource);
 		Assert.DoesNotThrow(() => t1 = getTestPlanetType(
 			id    : 0,
 			image : icon,

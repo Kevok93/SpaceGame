@@ -74,44 +74,44 @@ namespace WebApp_NativeTests.StaticTypes.GameResource {
 			SingularYield yield4 = getTestSingularGameResourceYield(type: type1, value: -400);
 
 			SingularYield    sum1 = yield1 + yield2;
-			Assert.AreEqual( sum1.type , type1);
-			Assert.AreEqual( sum1.value,   300);
+			Assert.AreEqual( sum1.type     , type1);
+			Assert.AreEqual( sum1.value    ,   300);
 			
 			SingularYield    sum2 = yield1 +    500;
-			Assert.AreEqual( sum2.type , type1);
-			Assert.AreEqual( sum2.value,   600);
+			Assert.AreEqual( sum2.type     , type1);
+			Assert.AreEqual( sum2.value    ,   600);
 			
 			SingularYield    sum3 =    500 + yield1;
-			Assert.AreEqual( sum3.type , type1);
-			Assert.AreEqual( sum3.value,   600);
+			Assert.AreEqual( sum3.type     , type1);
+			Assert.AreEqual( sum3.value    ,   600);
 				
 			SingularYield    sum4 = yield1 + yield4;
-			Assert.AreEqual( sum4.type , type1);
-			Assert.AreEqual( sum4.value,  -300);
+			Assert.AreEqual( sum4.type     , type1);
+			Assert.AreEqual( sum4.value    ,  -300);
 				
 			SingularYield   diff1 = yield2 - yield1;
-			Assert.AreEqual(diff1.type , type1);
-			Assert.AreEqual(diff1.value,   100);
+			Assert.AreEqual(diff1.type     , type1);
+			Assert.AreEqual(diff1.value    ,   100);
 			
 			SingularYield   diff2 = yield1 - yield4;
-			Assert.AreEqual(diff2.type , type1);
-			Assert.AreEqual(diff2.value,   500);
+			Assert.AreEqual(diff2.type     , type1);
+			Assert.AreEqual(diff2.value    ,   500);
 			
 			SingularYield   diff3 = yield4 -    100;
-			Assert.AreEqual(diff3.type , type1);
-			Assert.AreEqual(diff3.value,  -500);
+			Assert.AreEqual(diff3.type     , type1);
+			Assert.AreEqual(diff3.value    ,  -500);
 			
 			SingularYield   diff4 =    500 - yield1;
-			Assert.AreEqual(diff4.type , type1);
-			Assert.AreEqual(diff4.value,   400);
+			Assert.AreEqual(diff4.type     , type1);
+			Assert.AreEqual(diff4.value    ,   400);
 			
 			SingularYield   prod1 = yield1 *      2;
-			Assert.AreEqual(prod1.type , type1);
-			Assert.AreEqual(prod1.value,   200);
+			Assert.AreEqual(prod1.type     , type1);
+			Assert.AreEqual(prod1.value    ,   200);
 			
 			SingularYield   prod2 = yield1 *     -1;
-			Assert.AreEqual(prod2.type , type1);
-			Assert.AreEqual(prod2.value,  -100);
+			Assert.AreEqual(prod2.type     , type1);
+			Assert.AreEqual(prod2.value    ,  -100);
 			
 			Assert.Throws<InvalidCastException>(() => yield1 += yield3);
 			Assert.Throws<InvalidCastException>(() => yield1 += yield3);
