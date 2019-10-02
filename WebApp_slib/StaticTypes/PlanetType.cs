@@ -6,9 +6,9 @@ public class PlanetType : DeserializedElement {
     public string        name        { get; }
     public string        description { get; }
     
-    public delegate FinishedResourceYield YieldCalculator(uint planetCount);
+    public delegate ResourceYield YieldCalculator(uint planetCount);
 
-    public FinishedResourceYield getYield(uint planetCount) => this.yieldCalculator.Invoke(planetCount);
+    public ResourceYield getYield(uint planetCount) => this.yieldCalculator.Invoke(planetCount);
     private readonly YieldCalculator yieldCalculator;
 
     public PlanetType(
@@ -24,6 +24,6 @@ public class PlanetType : DeserializedElement {
         this.yieldCalculator = yieldCalculator;
     }
     
-    public static readonly YieldCalculator NULL_YIELD = (planetCount) => ResourceYield.NOTHING;
+    public static readonly YieldCalculator NULL_YIELD = (planetCount) => MutableResourceYield.NOTHING_CONST;
 }
 }

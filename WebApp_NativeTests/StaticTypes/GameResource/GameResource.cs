@@ -4,7 +4,7 @@ using NUnit.Framework;
 using WebApp_slib.StaticTypes;
 using static WebApp_NativeTests.StaticTypes.GameResource.SingularGameResourceYieldTest;
 using static WebApp_slib.StaticTypes.GameResourceType;
-using static WebApp_slib.StaticTypes.ResourceYield;
+using static WebApp_slib.StaticTypes.MutableResourceYieldInternal;
 
 namespace WebApp_NativeTests.StaticTypes.GameResource {
 [TestFixture(TestName = "Game Resource Tests", TestOf = typeof(GameResourceType))]

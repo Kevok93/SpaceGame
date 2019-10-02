@@ -55,15 +55,15 @@ public class PlanetTypeTest {
 			Assert.AreEqual( "Test1"   , t1.name        );
 			Assert.AreEqual( "TestD1"  , t1.description );
 			Assert.AreEqual( icon      , t1.icon        );
-			Assert.AreSame ( fullYield , calcYield      );
+			Assert.AreEqual( fullYield , calcYield      );
 		});
 	}
 
 
 	[Test]
 	public static void nothingCalculator() {
-		Assert.AreSame(
-			ResourceYield.NOTHING, 
+		Assert.AreEqual(
+			MutableResourceYield.NOTHING_CONST, 
 			NULL_YIELD.Invoke(123)
 		);
 	}

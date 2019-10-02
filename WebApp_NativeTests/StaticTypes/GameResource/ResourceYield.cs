@@ -3,22 +3,22 @@ using NUnit.Framework;
 using WebApp_slib.StaticTypes;
 using static WebApp_NativeTests.StaticTypes.GameResource.SingularGameResourceYieldTest;
 using static WebApp_slib.StaticTypes.GameResourceType;
-using static WebApp_slib.StaticTypes.ResourceYield;
+using static WebApp_slib.StaticTypes.MutableResourceYield;
 
 namespace WebApp_NativeTests.StaticTypes.GameResource {
 
-[TestFixture(TestName = "Game Resource Yield Tests", TestOf = typeof(ResourceYield))]
+[TestFixture(TestName = "Game Resource Yield Tests", TestOf = typeof(MutableResourceYield))]
 public class GameResourceYieldTest {
     
     
     
-    public static ResourceYield GetTestResourceYield(
+    public static MutableResourceYield GetTestResourceYield(
         params SingularYield[] yields
     ) {
         yields = yields ?? new[] {getTestSingularGameResourceYield()};
         return TestConstructor.testBuildObject(
             () => {
-                var unfinishedYield = new ResourceYield();
+                var unfinishedYield = new MutableResourceYield();
                 foreach (var yield in yields) {
                     unfinishedYield.Add(yield);
                 }
@@ -28,7 +28,7 @@ public class GameResourceYieldTest {
         );
     }
     
-    public static FinishedResourceYield GetTestFinishedGameResourceYield(
+    public static ResourceYield GetTestFinishedGameResourceYield(
         params SingularYield[] yields
     ) {
         var unfinishedYield = GetTestResourceYield(yields);
@@ -42,10 +42,11 @@ public class GameResourceYieldTest {
         var returnType1 = GameResourceTest.getTestGameResourceType();
         var yield1      = new SingularYield(returnType1, 500);
 
-        ResourceYield unfinishedYield = null;
+        MutableResourceYield? _unfinishedYield = null;
         Assert.DoesNotThrow(
-            () => unfinishedYield = GetTestResourceYield(yield1)
+            () => _unfinishedYield = GetTestResourceYield(yield1)
         );
+        MutableResourceYield unfinishedYield = _unfinishedYield.Value;
 
         var yieldT = unfinishedYield.getYield(returnType1);
         Assert.That(unfinishedYield.Count       , Is.EqualTo(1));
@@ -64,22 +65,22 @@ public class GameResourceYieldTest {
         var returnType1 = GameResourceTest.getTestGameResourceType();
         var yield1 = new SingularYield(returnType1, 500);
 
-        FinishedResourceYield finishedYield = null;
+        ResourceYield? finishedYield = null;
         Assert.DoesNotThrow(
             () => finishedYield = GetTestFinishedGameResourceYield(yield1)
         );
 
-        var yieldT = finishedYield.getYield(returnType1);
-        Assert.That(finishedYield.Count        , Is.EqualTo(1)             );
-        Assert.That(finishedYield              , Contains.Key(returnType1) );
-        Assert.That(finishedYield[returnType1] , Is.EqualTo(500)           );
-        Assert.That(yieldT.value               , Is.EqualTo(500)           );
-        Assert.That(yieldT.type                , Is.EqualTo(returnType1)   );
+        var yieldT = finishedYield?.getYield(returnType1);
+        Assert.That(finishedYield?.Count        , Is.EqualTo(1)             );
+        Assert.That(finishedYield               , Contains.Key(returnType1) );
+        Assert.That(finishedYield?[returnType1] , Is.EqualTo(500)           );
+        Assert.That(yieldT?.value               , Is.EqualTo(500)           );
+        Assert.That(yieldT?.type                , Is.EqualTo(returnType1)   );
     }
     
     [Test]
     public void nullConstant() {
-        var nullYield = NOTHING;
+        var nullYield = NOTHING_CONST;
 
         Assert.That(nullYield.Count, Is.EqualTo(0));
     }
@@ -95,28 +96,26 @@ public class GameResourceYieldTest {
         SingularYield singleYield3 = getTestSingularGameResourceYield(type1, -300);
         SingularYield singleYield4 = getTestSingularGameResourceYield(type2,  400);
 
-        FinishedResourceYield yield1 = GetTestFinishedGameResourceYield(
+        ResourceYield  yield1 = GetTestFinishedGameResourceYield(
             singleYield1
         );
-        FinishedResourceYield yield2 = GetTestFinishedGameResourceYield(
+        ResourceYield yield2 = GetTestFinishedGameResourceYield(
             singleYield2,
             singleYield4
         );
-        FinishedResourceYield yield3 = GetTestFinishedGameResourceYield(
+        ResourceYield yield3 = GetTestFinishedGameResourceYield(
             singleYield3
         );
-        FinishedResourceYield yieldN = null;
 
-        ResourceYield yieldU1 = new ResourceYield();
-        ResourceYield yieldU2 = yield1.cloneUnlocked();
-        ResourceYield yieldUN = null;
+        MutableResourceYield yieldU1 = new MutableResourceYield();
+        MutableResourceYield yieldU2 = yield1.cloneUnlocked();
         
-        FinishedResourceYield sumI = yield1.combinePure(NOTHING);
+        ResourceYield sumI = yield1.combinePure(NOTHING_CONST);
         Assert.That(sumI.Count   , Is.EqualTo(1));
         Assert.That(sumI         , Contains.Key(type1));
         Assert.That(sumI[type1]  , Is.EqualTo(100));
         
-        FinishedResourceYield sum1 = yield1.combinePure(yield2);
+        ResourceYield sum1 = yield1.combinePure(yield2);
         Assert.That(sum1.Count   , Is.EqualTo(2));
         Assert.That(sum1         , Contains.Key(type1));
         Assert.That(sum1         , Contains.Key(type2));
@@ -127,7 +126,7 @@ public class GameResourceYieldTest {
         Assert.That(yield1       , Contains.Key(type1));
         Assert.That(yield1[type1], Is.EqualTo(100));
 
-        FinishedResourceYield sum2 = yield1.combinePure(yield3);
+        ResourceYield sum2 = yield1.combinePure(yield3);
         Assert.That(sum2.Count   , Is.EqualTo(1));
         Assert.That(sum2         , Contains.Key(type1));
         Assert.That(sum2[type1]  , Is.EqualTo(-200));
@@ -136,45 +135,27 @@ public class GameResourceYieldTest {
         Assert.That(yield3       , Contains.Key(type1));
         Assert.That(yield3[type1], Is.EqualTo(-300));
 
-        FinishedResourceYield sumN1 = yield1.combinePure(yieldN);
-        Assert.That(sumN1.Count  , Is.EqualTo(1));
-        Assert.That(sumN1        , Contains.Key(type1));
-        Assert.That(sumN1[type1] , Is.EqualTo(100));
-        
-        FinishedResourceYield sumN2 = yieldN.combinePure(yield1);
-        Assert.That(sumN2.Count  , Is.EqualTo(1));
-        Assert.That(sumN2        , Contains.Key(type1));
-        Assert.That(sumN2[type1] , Is.EqualTo(100));
 
-        FinishedResourceYield sumN3 = yieldN.combinePure(yieldN);
-        Assert.That(sumN3.Count  , Is.EqualTo(0));
-        Assert.That(sumN3        , Does.Not.ContainKey(type1));
-        
-        
         Assert.That(yieldU1.Count , Is.EqualTo(0));
         Assert.That(yieldU1       , Does.Not.ContainKey(type1));
-        FinishedResourceYield sumU1 = yieldU1.combineDirty(yield1);
+        ResourceYield sumU1 = yieldU1.combineDirty(yield1);
         Assert.That(yieldU1.Count , Is.EqualTo(1));
         Assert.That(yieldU1       , Contains.Key(type1));
         Assert.That(yieldU1[type1], Is.EqualTo(100));
-        Assert.That(yieldU1       , Is.SameAs(sumU1));
+        Assert.That(yieldU1       , Is.EqualTo(sumU1));
 
         
         Assert.That(yieldU2.Count , Is.EqualTo(1));
         Assert.That(yieldU2       , Contains.Key(type1));
         Assert.That(yieldU2[type1], Is.EqualTo(100));
-        FinishedResourceYield sumU2 = yieldU2.combineDirty(yield2);
+        ResourceYield sumU2 = yieldU2.combineDirty(yield2);
         Assert.That(yieldU2.Count , Is.EqualTo(2));
         Assert.That(yieldU2       , Contains.Key(type1));
         Assert.That(yieldU2       , Contains.Key(type2));
         Assert.That(yieldU2[type1], Is.EqualTo(300));
         Assert.That(yieldU2[type2], Is.EqualTo(400));
-        Assert.That(yieldU2       , Is.SameAs(sumU2));
+        Assert.That(yieldU2       , Is.EqualTo(sumU2));
         
-        Exception sumUN = Assert.Catch(() => yieldUN.combineDirty(yield1));
-        Assert.That(sumUN, Is.AssignableFrom<ArgumentNullException>());
-
-
     }
 
     [Test]
@@ -187,25 +168,24 @@ public class GameResourceYieldTest {
         SingularYield singleYield2 = getTestSingularGameResourceYield(type: type1, value:  200);
         SingularYield singleYield4 = getTestSingularGameResourceYield(type: type2, value: -400);
 
-        FinishedResourceYield yield1 = GetTestFinishedGameResourceYield(
+        ResourceYield yield1 = GetTestFinishedGameResourceYield(
             singleYield1
         );
-        FinishedResourceYield yield2 = GetTestFinishedGameResourceYield(
+        ResourceYield yield2 = GetTestFinishedGameResourceYield(
             singleYield2,
             singleYield4
         );
-        FinishedResourceYield yieldN = null;
+        ResourceYield? yieldN1 = null;
         
-        ResourceYield yieldU1 = new ResourceYield();
-        ResourceYield yieldU2 = yield1.cloneUnlocked();
-        ResourceYield yieldUN = null;
+        MutableResourceYield yieldU1 = new MutableResourceYield();
+        MutableResourceYield yieldU2 = yield1.cloneUnlocked();
 
-        FinishedResourceYield prodI = yield1.scalePure(1);
+        MutableResourceYield prodI = yield1.scalePure(1);
         Assert.That(prodI.Count   , Is.EqualTo(1));
         Assert.That(prodI         , Contains.Key(type1));
         Assert.That(prodI[type1]  , Is.EqualTo(100));
         
-        FinishedResourceYield prod2 = yield2.scalePure(2);
+        MutableResourceYield prod2 = yield2.scalePure(2);
         Assert.That(prod2.Count   , Is.EqualTo(2));
         Assert.That(prod2         , Contains.Key(type1));
         Assert.That(prod2[type1]  , Is.EqualTo( 400));
@@ -218,25 +198,41 @@ public class GameResourceYieldTest {
         Assert.That(yield2       , Contains.Key(type2));
         Assert.That(yield2[type2], Is.EqualTo(-400));
         
-        FinishedResourceYield prodN = yieldN.scalePure(2);
-        Assert.That(prodN.Count  , Is.EqualTo(0));
-        Assert.That(prodN        , Does.Not.ContainKey(type1));
+        ResourceYield prodN1 = yieldN1.scalePure(2);
+        Assert.That(prodN1.Count  , Is.EqualTo(0));
+        Assert.That(prodN1        , Does.Not.ContainKey(type1));
         
-        FinishedResourceYield prodU1 = yieldU1.scaleDirty(2);
+        ResourceYield prodN2 = yieldN1 * 2;
+        Assert.That(prodN2.Count  , Is.EqualTo(0));
+        Assert.That(prodN2        , Does.Not.ContainKey(type1));
+        
+        ResourceYield prodU1 = yieldU1.scaleDirty(2);
         Assert.That(prodU1.Count  , Is.EqualTo(0));
         Assert.That(prodU1        , Does.Not.ContainKey(type1));
         
         Assert.That(yieldU2.Count , Is.EqualTo(1));
         Assert.That(yieldU2       , Contains.Key(type1));
         Assert.That(yieldU2[type1], Is.EqualTo(100));
-        FinishedResourceYield prodU2 = yieldU2.scaleDirty(2);
+        ResourceYield prodU2 = yieldU2.scaleDirty(2);
         Assert.That(yieldU2.Count , Is.EqualTo(1));
         Assert.That(yieldU2       , Contains.Key(type1));
         Assert.That(yieldU2[type1], Is.EqualTo(200));
-        Assert.That(yieldU2       , Is.SameAs(prodU2));
+        Assert.That(yieldU2       , Is.EqualTo(prodU2));
         
-        Exception sumUN = Assert.Catch(() => yieldUN.scaleDirty(2));
-        Assert.That(sumUN, Is.AssignableFrom<ArgumentNullException>());
+    }
+    
+    [Test]
+    public void finishedYieldWrappers() {
+        var returnType1 = GameResourceTest.getTestGameResourceType();
+        var yield1      = new SingularYield(returnType1, 500);
+
+        var unfinishedYield = GetTestResourceYield(yield1);
+        var   finishedYield = unfinishedYield.readOnly();
+        
+        Assert.AreEqual(
+            unfinishedYield.Values,
+              finishedYield.Values
+        );
     }
 
 

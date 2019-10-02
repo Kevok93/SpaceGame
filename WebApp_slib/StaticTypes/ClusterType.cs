@@ -1,5 +1,5 @@
 using static WebApp_slib.StaticTypes.GameResourceType;
-using static WebApp_slib.StaticTypes.ResourceYield;
+using static WebApp_slib.StaticTypes.MutableResourceYieldInternal;
 
 namespace WebApp_slib.StaticTypes {
     public class ClusterType : DeserializedElement {
@@ -7,9 +7,9 @@ namespace WebApp_slib.StaticTypes {
         public string        name        { get; }
         public string        description { get; }
         
-        public delegate FinishedResourceYield YieldModifier(ResourceYield baseYield);
+        public delegate ResourceYield YieldModifier(MutableResourceYield baseYield);
 
-        public FinishedResourceYield modifyYield(FinishedResourceYield baseYield) => 
+        public ResourceYield modifyYield(ResourceYield baseYield) => 
             this.yieldModifier.Invoke(baseYield.cloneUnlocked());
         
         private readonly YieldModifier yieldModifier;

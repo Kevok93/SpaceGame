@@ -39,7 +39,7 @@ public class ClusterTypeTest {
 			);
 		var fullYield =
 			GameResourceYieldTest.GetTestFinishedGameResourceYield(yields: yieldResource);
-		YieldModifier yieldMod = (yield) => yield.scalePure(2);
+		YieldModifier yieldMod = (yield) => yield.scalePure(2).readOnly();
 		Assert.DoesNotThrow(() => t1 = getTestClusterType(
 			id    : 0,
 			image : icon,

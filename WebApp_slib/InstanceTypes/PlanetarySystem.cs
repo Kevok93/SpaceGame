@@ -9,12 +9,12 @@ using static WebApp_slib.StaticTypes.GameResourceType;
 
 namespace WebApp_slib.InstanceTypes {
     public class SystemCluster {
-        public class PlanetCount : Dictionary<PlanetType, uint>{}
+        public class PlanetCounts : Dictionary<PlanetType, uint>{}
         
         public static Random rng = new Random();
         
         public ClusterType clusterType { get; }
-        public PlanetCount planetCount { get; }
+        public PlanetCounts planetCounts { get; }
 
         public uint  freePlanetCount { get; private set; }
         public uint totalPlanetCount { get; private set; }
@@ -28,11 +28,11 @@ namespace WebApp_slib.InstanceTypes {
             this.clusterType      = clusterType;
             this.totalPlanetCount = initialPlanetCount;
             this.freePlanetCount  = initialPlanetCount;
-            this.planetCount      = new PlanetCount();
+            this.planetCounts      = new PlanetCounts();
         }
 
         public  uint  getPlanetCount(PlanetType type) => this._lock.doLocked(_getPlanetCount, type);
-        private uint _getPlanetCount(PlanetType type) => planetCount.ContainsKey(type) ? planetCount[type] : 0;
+        private uint _getPlanetCount(PlanetType type) => this.planetCounts.ContainsKey(type) ? this.planetCounts[type] : 0;
         
         public  void  modPlanetCount(PlanetType type, int countModification) => this._lock.doLocked(_modPlanetCount, type, countModification);
         private int  _modPlanetCount(PlanetType type, int countModification) {
@@ -43,7 +43,7 @@ namespace WebApp_slib.InstanceTypes {
                 throw new ArgumentOutOfRangeException(paramName: "Planet Count", message:"Cannot remove more planets from a type than free");
             } else {
                 freePlanetCount   -= (uint)countModification;
-                planetCount[type] =  (uint)(planetTypeCount + countModification);
+                this.planetCounts[type] =  (uint)(planetTypeCount + countModification);
             }
             
             return 0;
@@ -66,12 +66,12 @@ namespace WebApp_slib.InstanceTypes {
                 //Start stripping off a random planet for each remaining planet lost
                 long removedPlanetsRemaining = -freePlanetsAfterMod;
 
-                HashSet<PlanetType> availableTypes = new HashSet<PlanetType>(planetCount.Keys);
+                HashSet<PlanetType> availableTypes = new HashSet<PlanetType>(this.planetCounts.Keys);
                 while (removedPlanetsRemaining > 0) {
                     PlanetType type = availableTypes.ElementAt(rng.Next(availableTypes.Count));
                     //don't trust
-                    Debug.Assert(planetCount[type] >= 0);
-                    if (planetCount[type] <= 0) {
+                    Debug.Assert(this.planetCounts[type] >= 0);
+                    if (this.planetCounts[type] <= 0) {
                         availableTypes.Remove(type);
                         continue;
                     }
@@ -86,12 +86,12 @@ namespace WebApp_slib.InstanceTypes {
             return 0;
         }
 
-        public  FinishedResourceYield getYield() => _lock.doLocked(_getYield);
-        private FinishedResourceYield _getYield() {
-            FinishedResourceYield yield = new ResourceYield();
-            foreach (PlanetType type in planetCount.Keys) 
-                yield.combinePure(type.getYield(planetCount[type]));
-            return yield;
+        public  ResourceYield  getYield() => _lock.doLocked(_getYield);
+        private ResourceYield _getYield() {
+            MutableResourceYield yield = new MutableResourceYield();
+            foreach (PlanetType type in this.planetCounts.Keys) 
+                yield.combineDirty(type.getYield(this.planetCounts[type]));
+            return clusterType.modifyYield(yield.readOnly());
         }
 
     }

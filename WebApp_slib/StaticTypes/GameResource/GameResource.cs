@@ -23,6 +23,7 @@ public class GameResourceType :
         this.description = description ?? throw new ArgumentNullException(nameof(      units));
         this.units       = units       ?? throw new ArgumentNullException(nameof(description));
     }
-    
+
+    public override string ToString() => $"RT:{{{id}: {name}}}";
 }
 }
